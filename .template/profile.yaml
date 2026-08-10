@@ -1,0 +1,22 @@
+version: 1
+profile: standard
+project:
+  type: library
+stack:
+  primary: python
+ai:
+  enabled: false
+  evaluation: false
+  semantic_review: off
+  structural_review: off
+deployment:
+  enabled: false
+  target: none
+controls:
+  secret_scan: true
+  dependency_review: true
+  codeql: true
+  coverage: true
+  sbom: false
+  artifact_attestation: true
+  scorecard: false

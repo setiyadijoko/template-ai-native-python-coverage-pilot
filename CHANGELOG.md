@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Added a deterministic Python coverage pilot with same-named unit,
+  integration, and E2E test modules to validate template-owned fixture
+  isolation and aggregate coverage behavior.
 - Added a declarative maturity-profile foundation: versioned schema, safe
   example, Starter/Standard/Enterprise control mapping, compatibility-mode
   validator, and ADR-0008. Profile files do not activate workflows yet.
