@@ -1,6 +1,6 @@
 # Hosted Python Coverage Consumer Pilot Design
 
-**Status:** Approved for implementation
+**Status:** Implemented locally; hosted validation pending
 **Date:** 2026-08-10
 **Repository:** `setiyadijoko/template-ai-native-python-coverage-pilot`
 
