@@ -1,0 +1,66 @@
+name: docs-check
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  docs-check:
+    name: Markdown lint + link check + TBD/TODO scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Markdown lint
+        uses: DavidAnson/markdownlint-cli2-action@21c1be1b93ad9ed58fa840aacc3f279cde2a72ff # v24.2.0
+        with:
+          # Negation globs must be passed here (action globs take precedence
+          # over config "ignores"). Excludes auto-generated/internal docs.
+          globs: |
+            **/*.md
+            !CHANGELOG.md
+            !LICENSE
+            !.github/pull_request_template.md
+            !.github/ISSUE_TEMPLATE/**
+            !docs/superpowers/**
+
+      - name: Link check
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        with:
+          args: >-
+            --no-progress
+            --exclude-loopback
+            --exclude "^https://github.com/.*/(security|settings)/.*$"
+            README.md docs
+          fail: true
+
+      - name: Scan for TBD/TODO/FIXME in docs (allowed only in plans/internal docs)
+        shell: python
+        run: |
+          import glob, re, sys
+          pattern = re.compile(r"\b(TBD|TODO|FIXME)\b")
+          offenders = []
+          for f in glob.glob("docs/**/*.md", recursive=True):
+              # plans and internal working specs may legitimately carry TODOs
+              if f.startswith("docs/plans/") or f.startswith("docs/superpowers/"):
+                  continue
+              for i, line in enumerate(open(f, encoding="utf-8"), 1):
+                  if pattern.search(line):
+                      offenders.append(f"{f}:{i}: {line.strip()}")
+          if offenders:
+              print("Unresolved markers found outside docs/plans/:")
+              for o in offenders:
+                  print(" -", o)
+              sys.exit(1)
+          print("No unresolved TBD/TODO/FIXME markers outside docs/plans/.")
+
+# Workflow registered.
