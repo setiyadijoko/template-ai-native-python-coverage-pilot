@@ -1,5 +1,5 @@
 version: 1
-profile: standard
+profile: enterprise
 project:
   type: library
 stack:
