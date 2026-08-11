@@ -13,6 +13,8 @@ Disposable hosted Python consumer for template-ai-native coverage and CI validat
 
 ## Project overview
 
+Fork-safety pilot: this documentation-only change validates read-only pull-request execution from an external fork.
+
 This is a **template repository** ("Use this template"). Consumers create a new repo from it and select their stack; the template's CI adapts via `scripts/detect-stack.sh`. It targets AI-enabled enterprise applications, AI agents and agentic workflows, RAG applications, LLM gateways, document extraction and OCR, internal enterprise apps, API services, web apps, background workers, data-processing apps, integration platforms, and cloud-native or self-hosted systems.
 
 ## Quick start for every skill level
